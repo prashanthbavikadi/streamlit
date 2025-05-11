@@ -1,0 +1,16 @@
+if search_id:
+    matched_rows = data[data[id_column].astype(str) == str(search_id)]
+    if not matched_rows.empty:
+        st.write("### 🔍 Details for ID:", search_id)
+        st.dataframe(matched_rows)
+
+        # Make prediction for the selected row (excluding ID column)
+        row_for_prediction = matched_rows.drop(columns=[id_column])
+        prediction = get_predictions(row_for_prediction)
+
+        if prediction is not None:
+            result_text = "✅ Likely to Accept Loan" if prediction[0] == 1 else "❌ Not Likely to Accept Loan"
+            st.subheader("📢 Prediction Result:")
+            st.success(result_text)
+    else:
+        st.warning("⚠️ No matching ID found.")
